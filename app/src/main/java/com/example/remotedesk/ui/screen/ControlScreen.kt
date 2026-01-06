@@ -1,5 +1,6 @@
 package com.example.remotedesk.ui.screen
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
@@ -16,10 +17,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.BatteryChargingFull
+import androidx.compose.material3.Text
+import androidx.compose.ui.platform.LocalContext
+import java.net.HttpURLConnection
+import java.net.URL
+import com.example.remotedesk.ui.screen.ControlViewmodel
+import androidx.lifecycle.viewmodel.compose.viewModel
+
+
 
 @Composable
-fun ControlScreen() {
-
+fun ControlScreen(viewmodel: ControlViewmodel=viewModel()) {
+ val context = LocalContext.current
     // 🔹 STEP 1: MAIN SURFACE (ONLY ONE)
     Surface(
         modifier = Modifier
@@ -51,7 +60,7 @@ fun ControlScreen() {
                 ControlButton(
                     text = "Lock Laptop",
                     icon = Icons.Default.Lock,
-                    onclick = { println("Lock button clicked")}
+                    onclick = { viewmodel.Locklaptop()}
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -59,16 +68,20 @@ fun ControlScreen() {
                 ControlButton(
                     text = "Battery Status",
                     icon = Icons.Default.BatteryChargingFull,
-                    onclick = {   println("Battery button clicked")}
+                    onclick = { viewmodel.batteryStatus()
+                    Toast.makeText(context, "Battery: ${viewmodel.batteryStatus}",Toast.LENGTH_SHORT).show()}
                 )
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 ControlButton(
                     text = "System Status",
                     icon = Icons.Default.Info,
-                    onclick = {  println("Status button clicked")}
+                    onclick = {  viewmodel.SystemStatus()
+                        Toast.makeText(context, "System: ${viewmodel.sytemStatus}",Toast.LENGTH_SHORT).show()  }
                 )
+
             }
         }
     }
