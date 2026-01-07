@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 class ControlViewmodel : ViewModel() {
 
 
-    var batteryStatus by mutableStateOf("Unknown")
+    var batteryStatus by mutableStateOf("")
     private set
-    var sytemStatus by mutableStateOf("Unknown")
+    var sytemStatus by mutableStateOf("")
     private set
 
     fun batteryStatus(){
