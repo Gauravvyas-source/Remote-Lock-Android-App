@@ -1,11 +1,8 @@
-package com.example.remotedesk.Network
+package com.example.remotedesk.network
 
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 
 object ApiClient{

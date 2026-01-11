@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.remotedesk.Network.ApiClient
+import com.example.remotedesk.network.ApiClient
 import kotlinx.coroutines.launch
 
 class ControlViewmodel : ViewModel() {

@@ -18,7 +18,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.remotedesk.ui.component.ControlButton
 
 @Composable
-fun ControlScreen(viewmodel: ControlViewmodel = viewModel()) {
+fun ControlScreen(viewmodel: ControlViewmodel = viewModel() ,
+                  onDisconnect : () -> Unit ) {
 
     Box(
         modifier = Modifier

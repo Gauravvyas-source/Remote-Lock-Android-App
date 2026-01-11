@@ -1,4 +1,4 @@
-package com.example.remotedesk.Network
+package com.example.remotedesk.network
 
 data class ApiResponse<T>(
   val success : Boolean,
