@@ -24,6 +24,7 @@ fun AppNavGraph(viewModel: ServerConfigViewModel) {
 
         composable("connect") {
             ConnectScreen(
+                viewModel=viewModel,
                 onConnected = {
                     viewModel.setPaired(true)   // ✅ सिर्फ state change
                 }

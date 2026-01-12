@@ -3,22 +3,22 @@ package com.example.remotedesk.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.remotedesk.network.ServerConfigViewModel
 
 @Composable
 fun ConnectScreen(
-    onConnected: () -> Unit = {}   // ⚠️ अभी use नहीं होगा
+    viewModel: ServerConfigViewModel,
+    onConnected: () -> Unit = {}
 ) {
-
-    // 🔹 UI STATES
     var host by remember { mutableStateOf("") }
     var pairCode by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -28,7 +28,7 @@ fun ConnectScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                brush = Brush.verticalGradient(
+                Brush.verticalGradient(
                     listOf(
                         Color(0xFF0F2027),
                         Color(0xFF203A43),
@@ -43,10 +43,7 @@ fun ConnectScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp)
-                .background(
-                    color = Color(0xFF1E1E1E),
-                    shape = RoundedCornerShape(20.dp)
-                )
+                .background(Color(0xFF1E1E1E), RoundedCornerShape(20.dp))
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -59,7 +56,6 @@ fun ConnectScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 🔹 HOST / IP INPUT
             OutlinedTextField(
                 value = host,
                 onValueChange = { host = it },
@@ -70,7 +66,6 @@ fun ConnectScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 🔹 PAIR CODE INPUT
             OutlinedTextField(
                 value = pairCode,
                 onValueChange = { pairCode = it },
@@ -84,38 +79,33 @@ fun ConnectScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 🔹 ERROR
-            if (error != null) {
-                Text(
-                    text = error!!,
-                    color = Color.Red,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+            error?.let {
+                Text(text = it, color = Color.Red)
                 Spacer(modifier = Modifier.height(12.dp))
             }
 
-            // 🔹 CONNECT BUTTON
             Button(
-                onClick = {
-                    // ⚠️ अभी सिर्फ UI behavior
-                    error = null
-                    isLoading = true
-
-                    // Fake delay simulation
-                    // real logic PHASE 2 में आएगा
-                    isLoading = false
-                },
-                enabled = host.isNotBlank() && pairCode.isNotBlank() && !isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
-                shape = RoundedCornerShape(14.dp)
+                shape = RoundedCornerShape(14.dp),
+                enabled = host.isNotBlank() && pairCode.isNotBlank() && !isLoading,
+                onClick = {
+                    isLoading = true
+                    error = null
+
+                    viewModel.saveHostName(host)
+                    viewModel.setPaired(true)
+
+                    isLoading = false
+                    onConnected()
+                }
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
-                        color = Color.White,
+                        modifier = Modifier.size(22.dp),
                         strokeWidth = 2.dp,
-                        modifier = Modifier.size(22.dp)
+                        color = Color.White
                     )
                 } else {
                     Text("Connect")
